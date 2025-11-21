@@ -151,5 +151,18 @@
 "Submit" = "Submit";
 "EmptyContent" = "Content cannot be empty";
 "Submit_Successful" = "Submit Successfully";
+// 畢業門檻
+"GraduationThreshold_ShowDetail" = "Details";
+"GraduationThreshold_BackAbstract" = "Abstract";
+"Diverse_Hours" = "Diverse Hours";
+"Diverse_Hours_Services" = "Services";
+"Diverse_Hours_Diverse" = "Diverse";
+"Diverse_Hours_Major" = "Major";
+"Diverse_Hours_Complex" = "Complex";
+"English_Ability" = "English Ability";
+"Physical_Fitness" = "Physical Fitness";
+"Total_Credits_Required" = "TotalCreditsRequired";
+"Credit_Course" = "CreditCourse";
+"Credit_Course_None" = "None";
 // 選課系統
 "currently_not_a_course_selection_time" = "not in selection time！";

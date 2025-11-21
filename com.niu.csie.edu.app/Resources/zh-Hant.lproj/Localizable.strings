@@ -1,7 +1,7 @@
 // General
 "app_name" = "宜大學生app";
 "back" = "返回";
-"loading" = "加載中...";
+"loading" = "載入中...";
 // LoginView
 "school_num" = "學號(無需＠ms...)";
 "pwd" = "密碼";
@@ -151,5 +151,18 @@
 "Submit" = "送出";
 "EmptyContent" = "內容不能為空";
 "Submit_Successful" = "提交回饋成功";
+// 畢業門檻
+"GraduationThreshold_ShowDetail" = "顯示詳細";
+"GraduationThreshold_BackAbstract" = "摘要查詢";
+"Diverse_Hours" = "多元時數";
+"Diverse_Hours_Services" = "服務";
+"Diverse_Hours_Diverse" = "多元";
+"Diverse_Hours_Major" = "專業";
+"Diverse_Hours_Complex" = "綜合";
+"English_Ability" = "英語能力";
+"Physical_Fitness" = "體適能";
+"Total_Credits_Required" = "應修學分總數";
+"Credit_Course" = "學分學程";
+"Credit_Course_None" = "尚未選擇";
 // 選課系統
 "currently_not_a_course_selection_time" = "目前非選課時間！";

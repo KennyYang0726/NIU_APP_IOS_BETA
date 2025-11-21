@@ -10,9 +10,32 @@ struct LoginView: View {
         
     var body: some View {
         let metrics = LayoutMetrics.metrics(for: hSizeClass ?? .compact)
-        
+        // 登入流程 (WebView + Toast)
+        // 包在 ZStack 懸浮才不會把上方 logo 擠出去
+        ZStack {
+            if vm.startSSOLoginProcess {
+                SSOLoginWebView(
+                    account: vm.loginAccount,
+                    password: vm.password
+                ) { result in
+                    vm.handleSSOLoginResult(result)
+                }
+                .frame(width: 300, height: 300)
+                .offset(x: UIScreen.main.bounds.width * 2)
+            }
+            if vm.startZuvioLoginProcess {
+                ZuvioLoginWebView(
+                    account: vm.zuvioLoginEmail,
+                    password: vm.password
+                ) { success in
+                    vm.handleZuvioLoginResult(success)
+                }
+                .frame(width: 300, height: 300)
+                .offset(x: UIScreen.main.bounds.width * 2)
+                //.frame(height: 300)
+            }
+        }
         VStack(spacing: metrics.mainSpacing) {
-            
             // Logo
             Image("niu_logo")
                 .resizable()
@@ -102,34 +125,6 @@ struct LoginView: View {
             }
             .padding(23)
             .background(RoundedRectangle(cornerRadius: 23).foregroundColor(Color("Linear")))
-            
-            // 登入流程 (WebView + Toast)
-            // 包在 ZStack 懸浮才不會把上方 logo 擠出去
-            ZStack {
-                if vm.startSSOLoginProcess {
-                    SSOLoginWebView(
-                        account: vm.loginAccount,
-                        password: vm.password
-                    ) { result in
-                        vm.handleSSOLoginResult(result)
-                    }
-                    .frame(width: 300, height: 300)
-                    .offset(x: UIScreen.main.bounds.width * 2)
-                    //.frame(height: 300)
-                }
-                if vm.startZuvioLoginProcess {
-                    ZuvioLoginWebView(
-                        account: vm.zuvioLoginEmail,
-                        password: vm.password
-                    ) { success in
-                        vm.handleZuvioLoginResult(success)
-                    }
-                    .frame(width: 300, height: 300)
-                    .offset(x: UIScreen.main.bounds.width * 2)
-                    //.frame(height: 300)
-                }
-            }
-            
         }
         .padding(metrics.mainPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -295,8 +290,4 @@ private struct LayoutMetrics {
             )
         }
     }
-}
-
-#Preview {
-    LoginView()
 }
