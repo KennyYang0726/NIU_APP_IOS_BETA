@@ -59,7 +59,8 @@ struct WebQuestionnairePage: View {
     )
 
     var body: some View {
-        WebViewContainer(webView: webProvider.webView).ignoresSafeArea(edges: .bottom)
+        WebViewContainer(webView: webProvider.webView)
+            .ignoresSafeArea(edges: .bottom)
         .navigationTitle(LocalizedStringKey("Satisfaction_Survey"))
         .toolbarBackground(.visible, for: .navigationBar) // 強制背景顯示
         .toolbarBackground(Color.accentColor, for: .navigationBar)
@@ -82,5 +83,14 @@ struct WebQuestionnairePage: View {
                 .foregroundColor(.white) // 可依需求調整顏色
             }
         }
+        // 返回手勢攔截
+        .background(
+            NavigationSwipeHijacker(
+                handleSwipe: {
+                    dismiss()
+                    return true     // 我已經處理，系統不要再 pop
+                }
+            )
+        )
     }
 }

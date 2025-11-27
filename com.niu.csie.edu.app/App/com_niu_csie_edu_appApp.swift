@@ -9,14 +9,23 @@ import SwiftUI
 struct com_niu_csie_edu_appApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var appState = AppState()
     @StateObject private var settings = AppSettings()
     @StateObject private var session  = SessionManager()
+    @StateObject private var drawerVM = DrawerManagerViewModel()   // 避免抽屜在切換主題是被重建，因為重建後的init頁面是主頁
     
     var body: some Scene {
+        let scheme = currentSwiftUIColorScheme()
+        
         WindowGroup {
             RootView()
                 .environmentObject(settings)
+                .environmentObject(appState)
                 .environmentObject(session)
+                .environmentObject(drawerVM)
+                .applyIf(scheme != nil) { view in
+                    view.environment(\.colorScheme, scheme!)
+                }
                 // 不再用 preferredColorScheme 來控制主題，改由 UIKit 管
                 .onAppear {
                     // 啟動時套一次目前主題（不動畫）
@@ -27,6 +36,10 @@ struct com_niu_csie_edu_appApp: App {
                 .onChange(of: settings.theme) { _ in
                     // 之後每次改 theme 都用淡入淡出
                     applyTheme(animated: true)
+                    // 這行讓 SwiftUI 重新讀 environment（特別是 iOS 16，已知bug）
+                    DispatchQueue.main.async {
+                        settings.objectWillChange.send()
+                    }
                 }
         }
     }
@@ -66,6 +79,36 @@ struct com_niu_csie_edu_appApp: App {
             )
         } else {
             window.overrideUserInterfaceStyle = style
+        }
+    }
+    
+    // ios 16 已知 bug (新添加的)
+    private func currentSwiftUIColorScheme() -> ColorScheme? {
+        guard let style = UIApplication.shared
+            .connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first?
+            .windows
+            .first?
+            .overrideUserInterfaceStyle else { return nil }
+        
+        switch style {
+        case .dark: return .dark
+        case .light: return .light
+        default: return nil // 跟隨系統
+        }
+    }
+
+}
+
+
+extension View {
+    @ViewBuilder
+    func applyIf(_ condition: Bool, transform: (Self) -> some View) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
         }
     }
 }

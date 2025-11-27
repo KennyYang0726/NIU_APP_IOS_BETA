@@ -51,6 +51,7 @@ struct EUNI2View: View {
                             Image(systemName: "chevron.left")
                             Text(LocalizedStringKey("back"))
                         }
+                        .foregroundStyle(.white) // simulator 17.x, 18.x 不加入會不顯示圖標文字
                     }
                 }
             }

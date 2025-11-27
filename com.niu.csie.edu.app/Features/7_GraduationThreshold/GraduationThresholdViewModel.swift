@@ -136,7 +136,6 @@ final class GraduationThresholdViewModel: ObservableObject {
             let decoder = JSONDecoder()
             if let obj = try? decoder.decode(GraduationData.self, from: data) {
                 self.graduationData = obj
-                print(obj)
                 self.showPage()
             }
         }

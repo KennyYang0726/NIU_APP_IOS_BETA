@@ -48,6 +48,14 @@ final class BusViewModel: ObservableObject {
       #main > div.bus-header.container-md > div:nth-child(1) > div.bus-title.mb-1.mb-md-3 > div.bus-title__text {
           color: white !important;
       }
+      .bus-title__num {
+          filter: invert(1) !important;
+          color: white !important;
+      }
+      .bus-title__text {
+          filter: invert(1) !important;
+          color: white !important;
+      }
     `;
     """
     

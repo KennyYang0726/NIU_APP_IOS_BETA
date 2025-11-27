@@ -3,12 +3,11 @@ import SwiftUI
 
 
 struct DrawerManagerView: View {
-    @StateObject private var vm = DrawerManagerViewModel()
+    @EnvironmentObject var vm: DrawerManagerViewModel
+    @EnvironmentObject var appState: AppState // 注入狀態
     
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
     private var drawerWidth: CGFloat { isPad ? 320 : 200 } // iPad 寬一點
-    
-    @EnvironmentObject var appState: AppState // 注入狀態
 
     var body: some View {
         NavigationStack {
@@ -38,6 +37,7 @@ struct DrawerManagerView: View {
                     Button(action: { vm.toggleDrawer() }) {
                         Image(systemName: "line.3.horizontal")
                             .imageScale(.large)
+                            .foregroundStyle(.white) // simulator 17.x, 18.x 不加入會不顯示圖標文字
                     }
                 }
             }
@@ -57,11 +57,11 @@ struct DrawerManagerView: View {
         case .announcements: Drawer_AnnouncementsView()
         case .calendar: Drawer_CalendarView()
         case .questionnaire: Drawer_QuestionnaireView()
-        case .achievements: Drawer_AchievementsView(vm: vm)
-        case .huh: Drawer_ZDebugPushView(vm: vm)
-        case .about: Drawer_AboutView() // 無互動元件
+        case .achievements: Drawer_ZDebugPushView(vm: vm)
+        case .huh: Drawer_Huh1View()
+        case .about: Drawer_AboutView()
         case .settings: Drawer_SettingsView()
-        case .logout: Drawer_LogoutView(vm: vm)
+        case .logout: Drawer_LogoutView()
         }
     }
 }

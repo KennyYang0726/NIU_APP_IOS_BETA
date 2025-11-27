@@ -55,6 +55,7 @@ struct EUNI1View: View {
                     } label: {
                         Image(systemName: "arrow.clockwise")
                             .rotationEffect(.degrees(vm.isRefreshing ? 360 : 0))
+                            .foregroundStyle(.white) // simulator 17.x, 18.x 不加入會不顯示圖標文字
                     }
                 }
             }

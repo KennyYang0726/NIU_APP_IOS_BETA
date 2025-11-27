@@ -34,7 +34,8 @@ struct HomeView: View {
     
     @EnvironmentObject var appState: AppState // 注入狀態
     @EnvironmentObject var appSettings: AppSettings // 注入狀態
-    @EnvironmentObject var session: SessionManager // 執行js取得ssoid
+    @EnvironmentObject var session: SessionManager // 執行 js 取得 ssoid
+    @StateObject private var keepAlive = SSOKeepAliveService() // 當畫面在主頁時，keep-alive，他會呼叫 SessionManager
     
     @State private var didRunCheckOnce = false // 檢查 onReceive 匿名登入完成
     
@@ -110,10 +111,30 @@ struct HomeView: View {
             ProgressOverlay(isVisible: $vm.showOverlay, text: vm.overlayText)
         )
         .onAppear {
+            // 先第一次取得，接下來若持續閒置，由 keepAlive 負責
+            session.refreshSSOID()
+            keepAlive.start(with: session)
+        }
+        // onResume，怕有人回前景但session過期
+        .onReceive(NotificationCenter.default.publisher(
+            for: UIApplication.willEnterForegroundNotification
+        )) { _ in
             session.refreshSSOID()
         }
+        .onDisappear {
+            keepAlive.stop()
+        }
+        // 登入階段過期，重新登入提示
+        .alert(LocalizedStringKey("Dialog_Error_Title"), isPresented: $session.ssoDataInvalid) {
+            Button(LocalizedStringKey("Dialog_OK")) {
+                session.ssoDataInvalid = true
+                appState.navigate(to: .login)
+            }
+        } message: {
+            Text(LocalizedStringKey("SSO_LoginSessionInvalidHint"))
+        }
+        .interactiveDismissDisabled() // 禁止點背景取消
     }
-    
 
     // 把 Home 的標題字串對應到 AppRoute
     private func route(for keyIndex: Int) -> AppRoute? {
@@ -158,7 +179,7 @@ private struct FeatureItemView: View {
                         Text(feature.iconName) // 這裡使用 Text
                             .font(.custom("MyFlutterApp", size: isPad ? 61 : 37))
                             .foregroundStyle(.primary)
-                    }
+                }
             }
 
             Text(feature.title)

@@ -3,7 +3,8 @@ import SwiftUI
 
 
 struct RootView: View {
-    @StateObject var appState = AppState()
+    // @StateObject var appState = AppState()
+    @EnvironmentObject var appState: AppState
     @ViewBuilder
     func currentView() -> some View {
         switch appState.route {
@@ -11,6 +12,8 @@ struct RootView: View {
             LoginView().environmentObject(appState)
         case .home:
             DrawerManagerView().environmentObject(appState)
+        /*case .huh2:
+            DrawerManagerView().environmentObject(appState)*/
         case .EUNI:
             EUNI1View().environmentObject(appState)
         case .EUNI2:

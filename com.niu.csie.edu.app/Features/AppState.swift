@@ -11,6 +11,7 @@ enum NavigationAnimation {
 enum AppRoute {
     case login
     case home
+    //case huh2
     // Home 的功能頁
     case EUNI                 // M園區
     case EUNI2                // M園區-畫面

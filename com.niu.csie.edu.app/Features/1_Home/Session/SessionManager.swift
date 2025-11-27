@@ -6,6 +6,9 @@ import Combine
 
 @MainActor
 final class SessionManager: ObservableObject {
+    
+    @Published var ssoDataInvalid: Bool = false // 通知 HomeView 是否登入過期 true 即過期
+    
     // 1) 直接沿用你的 Provider 實作（簽名完全相容）
     //    這裡維持「各一支隱形 WebView」來跑登出與抓取 SSOID
     let webZuvio = WebView_Provider(
@@ -111,6 +114,11 @@ final class SessionManager: ObservableObject {
                             // 兩段都完成才結束 refresh 中的旗標
                             self.isRefreshingSSOID = false
                         }
+                    }
+                    
+                    // 檢查是否為空 → 通知 View 顯示 alert
+                    if !acadeMain.contains("JumpTo") {
+                        self.ssoDataInvalid = true
                     }
                 }
             }
