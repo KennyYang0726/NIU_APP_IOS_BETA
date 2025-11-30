@@ -8,9 +8,7 @@ import Combine
 final class SessionManager: ObservableObject {
     
     @Published var ssoDataInvalid: Bool = false // 通知 HomeView 是否登入過期 true 即過期
-    
-    // 1) 直接沿用你的 Provider 實作（簽名完全相容）
-    //    這裡維持「各一支隱形 WebView」來跑登出與抓取 SSOID
+  
     let webZuvio = WebView_Provider(
         initialURL: "https://irs.zuvio.com.tw/student5/setting/index",
         userAgent: .mobile
@@ -31,11 +29,11 @@ final class SessionManager: ObservableObject {
         guard !isRefreshingSSOID else { return }
         isRefreshingSSOID = true
 
-        // 換成用你 Provider 的「準備流程」API：
+        // 換成 Provider 的「準備流程」API：
         // 先導到 SSO 頁面 → 等待一段時間（讓 DOM / redirect 穩定）
         webSSO.hideUntilReady(actions: [
             .navigate("https://ccsys.niu.edu.tw/SSO/Std002.aspx"),
-            .wait(0.4) // 視實際需要調整
+            .wait(0.3) // 視實際需要調整
         ]) { [weak self] in
             guard let self else { return }
             // 預備完成後再執行真正的 JS（拿 return value）
@@ -70,7 +68,7 @@ final class SessionManager: ObservableObject {
                 if let data = raw.data(using: .utf8),
                     let result = try? JSONDecoder().decode(JSResult.self, from: data) {
 
-                    // 依序對應你要的四個鍵
+                    // 依序對應四個鍵
                     let acadeMain = result.hrefs.indices.contains(0) ? (result.hrefs[0] ?? "") : ""
                     let acadeSubject = result.hrefs.indices.contains(1) ? (result.hrefs[1] ?? "") : ""
                     let euni = result.hrefs.indices.contains(2) ? (result.hrefs[2] ?? "") : ""
@@ -80,7 +78,7 @@ final class SessionManager: ObservableObject {
                     print("ACADE_Subject:\(acadeSubject)")
                     print("EUNI:\(euni)")
 
-                    // 直接寫入你剛做好的 SSOIDSettings（會自動存到 suite "SSOID"）
+                    // 直接寫入 SSOIDSettings（會自動存到 suite "SSOID"）
                     SSOIDSettings.shared.bulkUpdate(
                         EUNI: euni,
                         acade_main: acadeMain,
@@ -110,15 +108,14 @@ final class SessionManager: ObservableObject {
                                 // DEBUG
                                 print("CCSYS:\(href)")
                                 SSOIDSettings.shared.ccsys = href
+                                // 檢查是否為空 → 通知 View 顯示 alert
+                                if !href.contains("JumpTo") {
+                                    self.ssoDataInvalid = true
+                                }
                             }
                             // 兩段都完成才結束 refresh 中的旗標
                             self.isRefreshingSSOID = false
                         }
-                    }
-                    
-                    // 檢查是否為空 → 通知 View 顯示 alert
-                    if !acadeMain.contains("JumpTo") {
-                        self.ssoDataInvalid = true
                     }
                 }
             }

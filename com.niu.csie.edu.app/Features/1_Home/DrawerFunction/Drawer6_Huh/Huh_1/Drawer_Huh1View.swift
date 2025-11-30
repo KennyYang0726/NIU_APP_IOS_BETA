@@ -130,9 +130,10 @@ struct Drawer_Huh1View: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color("Linear").ignoresSafeArea())
+        /*
         .toolbarBackground(.visible, for: .navigationBar) // 強制背景顯示
         .toolbarBackground(Color.accentColor, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)*/
     }
 }

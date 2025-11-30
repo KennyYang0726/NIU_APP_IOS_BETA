@@ -6,7 +6,6 @@ struct Drawer_SettingsView: View {
 
     @EnvironmentObject var settings: AppSettings
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var session: SessionManager
     @State var showDialog = false
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
     

@@ -27,7 +27,7 @@ struct Drawer_Huh2View: View {
                                 .foregroundColor(.primary)
                                 .padding(.horizontal, 22)
                                 .padding(.top, isPad ? 31 : 23)
-                            // 圖片：非滿版（你要求）
+                            // 非滿版圖片
                             Image(page.imageName)
                                 .resizable()
                                 .scaledToFit()

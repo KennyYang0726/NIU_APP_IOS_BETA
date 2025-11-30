@@ -127,7 +127,7 @@ struct HomeView: View {
         // 登入階段過期，重新登入提示
         .alert(LocalizedStringKey("Dialog_Error_Title"), isPresented: $session.ssoDataInvalid) {
             Button(LocalizedStringKey("Dialog_OK")) {
-                session.ssoDataInvalid = true
+                session.ssoDataInvalid = false
                 appState.navigate(to: .login)
             }
         } message: {
