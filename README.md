@@ -109,10 +109,9 @@
         活動報名
     </th>
   </tr>
-  <!--
   <tr>
     <td colspan="3">
-      <img src="https://github.com/JamesYang0826/NIU_APP_Assets/releases/download/NIU_APP_Assets/03.gif" width="800">    
+      <img src="https://github.com/JamesYang0826/NIU_APP_Assets/releases/download/NIU_APP_Assets/03_ios.gif" width="800">    
     </td>
   </tr>
    <tr>
@@ -125,7 +124,7 @@
     <th> 
         成就系統
     </th>
-  </tr>-->
+  </tr>
 </table>
 
 ## 問題
