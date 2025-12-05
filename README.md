@@ -6,7 +6,7 @@
 ---
 ## ☕ 贊助支持
 如果您喜歡這個專案，請幫我於右上角 **Star** 一下。  
-也歡迎使用 [**街口支付**]("https://service.jkopay.com/r/transfer?j=Transfer:909029869") 小額贊助支持，你的小小斗內，是我持續進步更新的動力。
+也歡迎使用 [**街口支付**](https://service.jkopay.com/r/transfer?j=Transfer:909029869) 小額贊助支持，你的小小斗內，是我持續進步更新的動力。
 
 <p>
   <a href="https://service.jkopay.com/r/transfer?j=Transfer:909029869">

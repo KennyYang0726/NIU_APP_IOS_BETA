@@ -34,8 +34,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // 要求定位授權
         setupLocationManager()
         
-        // 新增：啟動時從 Firebase 讀取學期值，更新 AppSettings
-        updateSemesterFromFirebase()
+        // 啟動時從 Firebase 讀取學期值，更新 AppSettings
+        AppSettingsManager.shared.loadSemester()
 
         // 主動抓一次 FCM Token（有時候 delegate 不會立刻回）
         Messaging.messaging().token { token, error in
@@ -56,18 +56,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         return true
     }
     
-    private func updateSemesterFromFirebase() {
-        let appSettings = AppSettings()
-        let path = "學年度"
-        FirebaseDatabaseManager.shared.readData(from: path) { value in
-            if let semesterValue = value as? Int {
-                appSettings.semester = semesterValue
-                print("已更新學期為 \(semesterValue)")
-            }
-        }
-    }
-
-
+    
     private func requestNotificationPermission(application: UIApplication) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error = error {
@@ -112,18 +101,19 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
         case .authorizedWhenInUse:
             PushDiag.log("位置權限：使用期間允許")
-            locationManager?.startUpdatingLocation()
+            // locationManager?.startUpdatingLocation()
 
         case .authorizedAlways:
             // 雖然你不用背景定位，但仍可能顯示這個狀態（例如使用者手動開啟）
             PushDiag.log("位置權限：永遠允許（但僅在前景使用）")
-            locationManager?.startUpdatingLocation()
+            // locationManager?.startUpdatingLocation()
 
         @unknown default:
             PushDiag.log("未知的授權狀態")
         }
     }
 
+    /* 不需無時無刻取得定位
     // MARK: - CLLocationManagerDelegate
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
@@ -139,7 +129,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         PushDiag.log("定位錯誤：\(error.localizedDescription)")
-    }
+    }*/
 
     // MARK: - APNs 註冊結果
     func application(_ application: UIApplication,

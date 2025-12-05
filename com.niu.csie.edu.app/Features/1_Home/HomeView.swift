@@ -112,6 +112,15 @@ struct HomeView: View {
         // 登出中 prog (注意！放在這裡才是全版面)
         .overlay(
             ProgressOverlay(isVisible: $vm.showOverlay, text: vm.overlayText)
+            // Toast 若觸發夜市
+            .toast(isPresented: $vm.showMatchedSpotToast) {
+                Text(vm.matchedSpotToastText)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(12)
+            }
+            .offset(y: -59)
         )
         .onAppear {
             // 先第一次取得，接下來若持續閒置，由 keepAlive 負責
@@ -123,6 +132,8 @@ struct HomeView: View {
             // ...
             print("已連續登入 \(loginStreak.getLoginCount()) 天")
             print("已連續亮色模式登入 \(loginStreakBright.getBrightLoginCount()) 天")
+            // 取得定位(夜市星人)
+            vm.CheckIfInNightMarket()
         }
         // onResume，怕有人回前景但session過期
         .onReceive(NotificationCenter.default.publisher(

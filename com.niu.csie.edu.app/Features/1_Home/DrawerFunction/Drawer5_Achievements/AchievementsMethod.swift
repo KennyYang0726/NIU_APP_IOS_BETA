@@ -2,13 +2,9 @@ import SwiftUI
 
 
 
-class AchievementsMethod {
+final class AchievementsMethod {
     
     private let loginPrefs = UserDefaults(suiteName: "LoginPrefs")!
-    
-    func achievementsCheck() {
-        
-    }
     
     // 檢查時間日期成就
     func checkTimeBasedAchievements() {
