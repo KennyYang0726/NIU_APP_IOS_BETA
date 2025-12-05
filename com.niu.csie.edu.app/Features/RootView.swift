@@ -12,8 +12,6 @@ struct RootView: View {
             LoginView().environmentObject(appState)
         case .home:
             DrawerManagerView().environmentObject(appState)
-        /*case .huh2:
-            DrawerManagerView().environmentObject(appState)*/
         case .EUNI:
             EUNI1View().environmentObject(appState)
         case .EUNI2:

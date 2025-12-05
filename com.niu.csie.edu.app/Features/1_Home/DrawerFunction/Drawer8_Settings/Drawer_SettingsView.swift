@@ -87,6 +87,7 @@ struct Drawer_SettingsView: View {
                         .linkKey(key: "DelUserDatabaseMessage_link", id: "0"),
                         .textKey("DelUserDatabaseMessage2")
                         ]),
+                    // messageAlignment: .leading,   // 可選參數
                     onCancel: {
                         showDialog = false
                     },
@@ -94,7 +95,6 @@ struct Drawer_SettingsView: View {
                         showDialog = false
                         // 1) 刪除資料庫中使用者資料
                         let userID = LoginRepository().loadCredentials()?.username ?? "取得學號失敗"
-                        print(userID)
                         FirebaseDatabaseManager.shared.deleteData(at: "users/\(userID)") { error in
                             if let error = error {
                                 print("刪除失敗：\(error.localizedDescription)")

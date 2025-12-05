@@ -6,11 +6,10 @@ import SwiftUI
 /// 1_Home/Drawer/DrawerManagerView 暫時替換一個
 struct Drawer_ZDebugPushView: View {
     
-    @ObservedObject var vm: DrawerManagerViewModel
     @State private var fcmToken: String = "（尚未取得）"
     @State private var authStatus: UNAuthorizationStatus = .notDetermined
     @State private var isRegistered: Bool = false
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("推播診斷面板").font(.title).bold()

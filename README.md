@@ -3,6 +3,19 @@
 # NIU App (iOS)
 > SwiftUI project — Application for National Ilan University
 
+---
+## ☕ 贊助支持
+如果您喜歡這個專案，請幫我於右上角 **Star** 一下。  
+也歡迎使用 [**街口支付**]("https://service.jkopay.com/r/transfer?j=Transfer:909029869") 小額贊助支持，你的小小斗內，是我持續進步更新的動力。
+
+<p>
+  <a href="https://service.jkopay.com/r/transfer?j=Transfer:909029869">
+    <img src="https://github.com/JamesYang0826/NIU_APP_Assets/releases/download/NIU_APP_Assets/QRCode_JKoPay.png" width="130" />
+  </a>
+</p>
+
+---
+
 這是一個給宜大學生使用的 iOS APP，整合了大部分常使用到的功能，包含數位學習 M 園區、分數查詢、課表、活動報名、畢業門檻查詢、選課、請假，並提供公車動態查詢與 Zuvio。
 
 
@@ -28,7 +41,7 @@
 
 ### iOS IPA
 - [Release 下載連結](https://github.com/KennyYang0726/NIU_APP_IOS/releases/tag/iOS)  
-  可直接下載測試用 IPA。
+  可直接下載測試用 IPA 並使用 Sideloadly 或其他工具將其側載進入您的設備。
 
 
 ## 使用方式

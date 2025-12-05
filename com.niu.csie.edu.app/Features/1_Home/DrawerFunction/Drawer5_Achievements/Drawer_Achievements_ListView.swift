@@ -4,8 +4,8 @@ import SwiftUI
 
 struct AchievementsFeature {
     let iconName: String
-    let title: LocalizedStringKey
-    let subtitle: LocalizedStringKey
+    let title: String
+    let subtitle: String
     let status: String
 }
 

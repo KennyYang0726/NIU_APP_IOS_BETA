@@ -1,14 +1,13 @@
 import SwiftUI
 
 
-// 雙按鈕
-struct CustomAlertOverlay2: View {
+// 單一按鈕
+struct CustomAlertOverlay1: View {
 
     let title: LocalizedStringKey
     let icon: Image?
     let message: AlertMessage
     let messageAlignment: TextAlignment
-    let onCancel: () -> Void
     let onConfirm: () -> Void
     let linkActions: [String: () -> Void]?
 
@@ -17,7 +16,6 @@ struct CustomAlertOverlay2: View {
         icon: Image? = nil,
         message: AlertMessage,
         messageAlignment: TextAlignment = .center,
-        onCancel: @escaping () -> Void,
         onConfirm: @escaping () -> Void,
         linkActions: [String: () -> Void]? = nil
     ) {
@@ -25,7 +23,6 @@ struct CustomAlertOverlay2: View {
         self.icon = icon
         self.message = message
         self.messageAlignment = messageAlignment
-        self.onCancel = onCancel
         self.onConfirm = onConfirm
         self.linkActions = linkActions
     }
@@ -37,7 +34,6 @@ struct CustomAlertOverlay2: View {
             message: message,
             linkActions: linkActions,
             buttons: [
-                AlertButtonConfig(titleKey: "Dialog_Cancel", action: onCancel),
                 AlertButtonConfig(titleKey: "Dialog_OK", action: onConfirm)
             ],
             messageAlignment: messageAlignment

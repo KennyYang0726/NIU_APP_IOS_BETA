@@ -2,7 +2,7 @@ import Foundation
 
 
 
-class LoginRepository {
+final class LoginRepository {
     private let loginPrefs = UserDefaults(suiteName: "LoginPrefs")!
 
     private let keyUsername = "username"

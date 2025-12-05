@@ -1,81 +1,132 @@
 import SwiftUI
 import Combine
+import CoreLocation
 
 
 
 @MainActor
 final class Drawer_AchievementsViewModel: ObservableObject {
     
+    // 新增 toast 控制
+    @Published var showToast: Bool = false
+    @Published var toastMessage: LocalizedStringKey = ""
+    // 新增 Dialog 控制
+    @Published var showDialog: Bool = false
+    //
+    @Published var features: [AchievementsFeature] = []
+    //
+    @Published var nightMarketParts: [AlertMessagePart] = []
+    
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
+    private let achievement = AchievementsMethod()
     
-    let features: [AchievementsFeature] = [
-        AchievementsFeature(
-            iconName: "01_Welcome",
-            title: "Achievements_01_Title",
-            subtitle: "Achievements_01_Description",
-            status: "completed_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "02_FeedBack",
-            title: "Achievements_02_Title",
-            subtitle: "Achievements_02_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "03_OhBoy3am",
-            title: "Achievements_03_Title",
-            subtitle: "Achievements_03_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "04_April_Fools",
-            title: "Achievements_04_Title",
-            subtitle: "Achievements_04_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "05_Birthday",
-            title: "Achievements_05_Title",
-            subtitle: "Achievements_05_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "06_Constitution_Day",
-            title: "Achievements_06_Title",
-            subtitle: "Achievements_06_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "07_100Days",
-            title: "Achievements_07_Title",
-            subtitle: "Achievements_07_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "08_Anniversary",
-            title: "Achievements_08_Title",
-            subtitle: "Achievements_08_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "09_Unremitting_Efforts",
-            title: "Achievements_09_Title",
-            subtitle: "Achievements_09_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "10_Dark_Repulsor",
-            title: "Achievements_10_Title",
-            subtitle: "Achievements_10_Description",
-            status: "uncompleted_zh_tw"
-        ),
-        AchievementsFeature(
-            iconName: "11_Night_Market_Guy",
-            title: "Achievements_11_Title",
-            subtitle: "Achievements_11_Description",
-            status: "uncompleted_zh_tw"
-        )
+    private let nightMarketList: [LocalizedStringKey] = [
+        "NightMarket_01", "NightMarket_02", "NightMarket_03",
+        "NightMarket_04", "NightMarket_05", "NightMarket_06",
+        "NightMarket_07", "NightMarket_08", "NightMarket_09",
+        "NightMarket_10", "NightMarket_11", "NightMarket_12",
+        "NightMarket_13", "NightMarket_14"
     ]
+
     
+    func loadAchievements(from dict: [String: Any]) {
+        let lang = Locale.current.languageCode ?? "en"
+        let langSuffix = (lang == "zh") ? "zh_tw" : "en"
+
+        var newFeatures: [AchievementsFeature] = []
+
+        // 01 ~ 10：Bool
+        for index in 1...10 {
+            let key = String(format: "%02d", index)
+            let raw = dict[key]
+
+            var isCompleted = false
+
+            if let val = raw as? Int {
+                isCompleted = (val == 1)
+            }
+            if let str = raw as? String, let intVal = Int(str) {
+                isCompleted = (intVal == 1)
+            }
+
+            newFeatures.append(
+                AchievementsFeature(
+                    iconName: "Achievement_\(key)_Icon",
+                    title: NSLocalizedString("Achievements_\(key)_Title", comment: ""),
+                    subtitle: NSLocalizedString("Achievements_\(key)_Description", comment: ""),
+                    status: isCompleted ? "completed_\(langSuffix)" : "uncompleted_\(langSuffix)"
+                )
+            )
+        }
+
+        // 成就 11：字串 14 位
+        if let raw11 = dict["11"] as? String {
+            let isDone = raw11 == "11111111111111"
+            newFeatures.append(
+                AchievementsFeature(
+                    iconName: "Achievement_11_Icon",
+                    title: NSLocalizedString("Achievements_11_Title", comment: ""),
+                    subtitle: NSLocalizedString("Achievements_11_Description", comment: ""),
+                    status: isDone ? "completed_\(langSuffix)" : "uncompleted_\(langSuffix)"
+                )
+            )
+        }
+        self.features = newFeatures
+    }
+
+    
+    func fetchAchievementStates() {
+        let userID = LoginRepository().loadCredentials()?.username ?? "取得學號失敗"
+        FirebaseDatabaseManager.shared.readData(from: "users/\(userID)/Achievements") { value in
+            guard let dict = value as? [String: Any] else { return }
+            Task { @MainActor in
+                self.loadAchievements(from: dict)
+            }
+        }
+    }
+    
+    func buildNightMarketParts(from state: String) -> [AlertMessagePart] {
+        var parts: [AlertMessagePart] = []
+
+        for (i, char) in state.enumerated() {
+            guard i < nightMarketList.count else { break }
+
+            let key = nightMarketList[i]
+            let color = (char == "1") ? Color.green : Color.red
+
+            parts.append(.textKeyColor(key, color))
+
+            if i < nightMarketList.count - 1 {
+                parts.append(.text("\n"))
+            }
+        }
+        return parts
+    }
+    
+    func NightMarketGuyClicked() {
+        let userID = LoginRepository().loadCredentials()?.username ?? "取得學號失敗"
+        FirebaseDatabaseManager.shared.readData(from: "users/\(userID)/Achievements/11") { value in
+            guard let state = value as? String else { return }
+            // 完成狀態
+            if state == "11111111111111" {
+                self.toastMessage = "Achievements_11_showMessage1"
+                self.showToast = true
+                return
+            }
+            // 未完成 → 檢查定位授權
+            let status = CLLocationManager().authorizationStatus
+            if status == .authorizedAlways || status == .authorizedWhenInUse {
+                // 動態產生夜市清單顏色
+                let result = self.buildNightMarketParts(from: state)
+                DispatchQueue.main.async {
+                    self.nightMarketParts = result
+                    self.showDialog = true
+                }
+            } else {
+                self.toastMessage = "Achievements_11_showMessage2"
+                self.showToast = true
+            }
+        }
+    }
     
 }

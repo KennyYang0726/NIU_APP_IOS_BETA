@@ -4,16 +4,25 @@ import FirebaseDatabase
 
 
 final class FirebaseDatabaseManager {
+    
     static let shared = FirebaseDatabaseManager()
     private let ref = Database.database().reference()
-
-    private init() {}
+    private let achievement = AchievementsMethod()
 
     func ensureUserNodeExists(for studentId: String, name: String) {
         let userRef = ref.child("users").child(studentId)
         userRef.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
                 print("使用者節點已存在：users/\(studentId)")
+                // 讀取首次登入日期
+                if let achievements = snapshot.childSnapshot(forPath: "Achievements").value as? [String: Any],
+                    let firstLoginDate = achievements["首次登入日期"] as? String {
+                    print("首次登入日期：\(firstLoginDate)")
+                    // 檢查相伴 100, 365 天
+                    self.achievement.checkAnniversaryAchievements(dateAttempt: firstLoginDate)
+                    // 順帶檢查是否同時完成其他成就如 日期成就, 3:00 a.m.
+                    self.achievement.checkTimeBasedAchievements()
+                }
             } else {
                 print("建立新使用者節點：users/\(studentId)")
                 self.createNewUserNode(for: studentId, name: name)
@@ -63,6 +72,9 @@ final class FirebaseDatabaseManager {
                 print("建立使用者節點失敗：\(error)")
             } else {
                 print("使用者節點建立成功：users/\(studentId)")
+                self.achievement.sendNotification(title: NSLocalizedString("Achievements_Get", comment: ""), body: NSLocalizedString("Achievements_01_Title", comment: ""))
+                // 順帶檢查是否同時完成其他成就如 日期成就, 3:00 a.m.
+                self.achievement.checkTimeBasedAchievements()
             }
         }
     }
@@ -128,7 +140,7 @@ final class FirebaseDatabaseManager {
     }
     
     // 處理姓名
-    func processName(_ name: String) -> String {
+    private func processName(_ name: String) -> String {
         let length = name.count
 
         if length == 2 {
@@ -144,5 +156,5 @@ final class FirebaseDatabaseManager {
             return name
         }
     }
-    
+
 }

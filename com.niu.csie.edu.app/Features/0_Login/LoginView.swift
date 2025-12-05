@@ -5,7 +5,7 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var vm = LoginViewModel()
     @Environment(\.horizontalSizeClass) private var hSizeClass
-    
+    @EnvironmentObject var drawerVM: DrawerManagerViewModel
     @EnvironmentObject var appState: AppState // 注入狀態
         
     var body: some View {
@@ -204,6 +204,9 @@ struct LoginView: View {
         .onChange(of: vm.loginFinished) { finished in
             guard finished else { return }
             if vm.zuvioLoginSuccess && vm.ssoLoginSuccess {
+                // Drawer 所在頁面重置，避免進入錯誤畫面
+                drawerVM.currentPage = .home
+                // 重置後再跳頁，確認無誤
                 appState.navigate(to: .home, withToast: LocalizedStringKey("login_success"))
             }
         }

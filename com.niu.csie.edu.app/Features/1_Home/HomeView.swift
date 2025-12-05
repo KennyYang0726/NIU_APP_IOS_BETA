@@ -39,6 +39,9 @@ struct HomeView: View {
     
     @State private var didRunCheckOnce = false // 檢查 onReceive 匿名登入完成
     
+    private let loginStreak = LoginStreakManager()
+    private let loginStreakBright = LoginStreakManagerBright()
+    
     private let title = NSLocalizedString("HomePage", comment: "")
     // 固定三欄
     private var columns: [GridItem] {
@@ -114,6 +117,12 @@ struct HomeView: View {
             // 先第一次取得，接下來若持續閒置，由 keepAlive 負責
             session.refreshSSOID()
             keepAlive.start(with: session)
+            // 紀錄連續登入天數
+            loginStreak.onLogin()
+            loginStreakBright.onLogin()
+            // ...
+            print("已連續登入 \(loginStreak.getLoginCount()) 天")
+            print("已連續亮色模式登入 \(loginStreakBright.getBrightLoginCount()) 天")
         }
         // onResume，怕有人回前景但session過期
         .onReceive(NotificationCenter.default.publisher(

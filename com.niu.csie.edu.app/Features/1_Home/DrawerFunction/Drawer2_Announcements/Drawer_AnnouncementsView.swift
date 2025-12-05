@@ -43,6 +43,7 @@ struct Drawer_AnnouncementsView: View {
                     title: "Announcement_Dialog_Title",
                     icon: Image(systemName: "globe"),
                     message: .plain("Announcement_Dialog_Message"),
+                    // messageAlignment: .leading,   // 可選參數
                     onCancel: {
                         vm.showDialog = false
                     },

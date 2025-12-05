@@ -15,7 +15,7 @@
 		108474CE2E9A8A3600CEB37C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 108474CD2E9A8A3600CEB37C /* FirebaseMessaging */; };
 		108474D02E9A8C7F00CEB37C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 108474CF2E9A8C7F00CEB37C /* FirebaseAuth */; };
 		108474D22E9A94F100CEB37C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 108474D12E9A94F100CEB37C /* GoogleService-Info.plist */; };
-		1A66F7302C88C31000C64130 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A66F72E2C88C31000C64130 /* Localizable.strings */; };
+		10B53FD82EE1DA980018BCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 10B53FD62EE1DA980018BCE4 /* Localizable.strings */; };
 		1AA990812C8351D200819A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AA990802C8351D200819A69 /* Assets.xcassets */; };
 		1AA990842C8351D200819A69 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AA990832C8351D200819A69 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -25,8 +25,8 @@
 		1050E1862EA240C600120A06 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 		108474D12E9A94F100CEB37C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		10A150EE2E8E560200A1592A /* com-niu-csie-edu-app-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "com-niu-csie-edu-app-Info.plist"; sourceTree = SOURCE_ROOT; };
-		10C8A1492E917ED60091B96F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		1A66F72F2C88C31000C64130 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		10B53FD72EE1DA980018BCE4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		10B53FD92EE1DB3A0018BCE4 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 		1AA990792C8351CD00819A69 /* com.niu.csie.edu.app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = com.niu.csie.edu.app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA990802C8351D200819A69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AA990832C8351D200819A69 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -89,7 +89,6 @@
 			children = (
 				10A150EB2E8E50B300A1592A /* Fonts */,
 				1AA990802C8351D200819A69 /* Assets.xcassets */,
-				1A66F72E2C88C31000C64130 /* Localizable.strings */,
 				108474D12E9A94F100CEB37C /* GoogleService-Info.plist */,
 			);
 			path = Resources;
@@ -123,6 +122,7 @@
 				1A66F72D2C88C29400C64130 /* Resources */,
 				1AA990822C8351D200819A69 /* Preview Content */,
 				1050E1832EA240AF00120A06 /* InfoPlist.strings */,
+				10B53FD62EE1DA980018BCE4 /* Localizable.strings */,
 			);
 			path = com.niu.csie.edu.app;
 			sourceTree = "<group>";
@@ -208,7 +208,7 @@
 			files = (
 				1050E1852EA240AF00120A06 /* InfoPlist.strings in Resources */,
 				1AA990842C8351D200819A69 /* Preview Assets.xcassets in Resources */,
-				1A66F7302C88C31000C64130 /* Localizable.strings in Resources */,
+				10B53FD82EE1DA980018BCE4 /* Localizable.strings in Resources */,
 				108474D22E9A94F100CEB37C /* GoogleService-Info.plist in Resources */,
 				1AA990812C8351D200819A69 /* Assets.xcassets in Resources */,
 			);
@@ -236,11 +236,11 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		1A66F72E2C88C31000C64130 /* Localizable.strings */ = {
+		10B53FD62EE1DA980018BCE4 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1A66F72F2C88C31000C64130 /* en */,
-				10C8A1492E917ED60091B96F /* zh-Hant */,
+				10B53FD72EE1DA980018BCE4 /* en */,
+				10B53FD92EE1DB3A0018BCE4 /* zh-Hant */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

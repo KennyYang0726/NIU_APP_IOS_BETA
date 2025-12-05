@@ -60,7 +60,7 @@ struct WebQuestionnairePage: View {
 
     var body: some View {
         WebViewContainer(webView: webProvider.webView)
-            .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea(edges: .bottom)
         .navigationTitle(LocalizedStringKey("Satisfaction_Survey"))
         .toolbarBackground(.visible, for: .navigationBar) // 強制背景顯示
         .toolbarBackground(Color.accentColor, for: .navigationBar)
@@ -92,5 +92,15 @@ struct WebQuestionnairePage: View {
                 }
             )
         )
+        .onAppear {
+            // 填寫完成，獲得成就
+            webProvider.onPageFinished = { _ in
+                webProvider.evaluateJS("javascript:(function() {return document.body.innerText.includes('我們已經收到您回覆的表單');})()") { result in
+                    if result! == "1" {
+                        AchievementsMethod().achievementsGet(index: "02")
+                    }
+                }
+            }
+        }
     }
 }

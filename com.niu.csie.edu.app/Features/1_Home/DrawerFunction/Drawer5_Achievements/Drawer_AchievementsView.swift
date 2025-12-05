@@ -3,9 +3,10 @@ import SwiftUI
 
 
 struct Drawer_AchievementsView: View {
+
+    @StateObject private var vm = Drawer_AchievementsViewModel()
     
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
-    @StateObject private var vm = Drawer_AchievementsViewModel()
 
     var body: some View {
         NavigationStack {
@@ -15,7 +16,7 @@ struct Drawer_AchievementsView: View {
                         let content = Drawer_Achievements_ListView(feature: feature, index: index)
                         if index == vm.features.count - 1 {
                             Button {
-                                print("夜市星人被點擊")
+                                vm.NightMarketGuyClicked()
                             } label: {
                                 content
                             }
@@ -31,5 +32,29 @@ struct Drawer_AchievementsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color("Linear").ignoresSafeArea())
+        .onAppear {
+            vm.fetchAchievementStates()
+        }
+        .overlay() {
+            if vm.showDialog {
+                CustomAlertOverlay1(
+                    title: "Achievements_11_Dialog_Title",
+                    icon: nil,
+                    message: .rich(vm.nightMarketParts),
+                    messageAlignment: .leading,   // 可選參數
+                    onConfirm: {
+                        vm.showDialog = false
+                    },
+                    linkActions: [:]
+                )
+            }
+        }
+        .toast(isPresented: $vm.showToast) {
+            Text(vm.toastMessage)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.black.opacity(0.8))
+                .cornerRadius(12)
+        }
     }
 }
