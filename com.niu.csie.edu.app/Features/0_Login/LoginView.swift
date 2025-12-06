@@ -156,7 +156,10 @@ struct LoginView: View {
                 return Alert(title: Text(LocalizedStringKey("New_Version_Found")),
                                 message: Text(message),
                                 primaryButton: .default(Text(LocalizedStringKey("New_Version_OK"))) {
-                                    // TODO
+                                    if let url = URL(string: "https://apps.apple.com/tw/app/pyto-ide/id1436650069"),
+                                       UIApplication.shared.canOpenURL(url) {
+                                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                    }
                                 },
                                 secondaryButton: .cancel(Text(LocalizedStringKey("New_Version_Cancel"))) {
                                     // Drawer 所在頁面重置，避免進入錯誤畫面
