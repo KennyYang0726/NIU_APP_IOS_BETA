@@ -151,6 +151,19 @@ struct LoginView: View {
                 return Alert(title: Text(LocalizedStringKey("login_failed_title")),
                              message: Text(LocalizedStringKey("login_failed_message")),
                              dismissButton: .default(Text(LocalizedStringKey("Dialog_OK"))))
+            // === 版本更新 ===
+            case .newVersion(let message):
+                return Alert(title: Text(LocalizedStringKey("New_Version_Found")),
+                                message: Text(message),
+                                primaryButton: .default(Text(LocalizedStringKey("New_Version_OK"))) {
+                                    // TODO
+                                },
+                                secondaryButton: .cancel(Text(LocalizedStringKey("New_Version_Cancel"))) {
+                                    // Drawer 所在頁面重置，避免進入錯誤畫面
+                                    drawerVM.currentPage = .home
+                                    // 重置後再跳頁，確認無誤
+                                    appState.navigate(to: .home, withToast: LocalizedStringKey("login_success"))
+                                })
             // === SSO：完全比照 Android 情境 ===
             case .ssoCredentialsFailed(let message):
                 return Alert(title: Text(LocalizedStringKey("login_failed_title")),
@@ -204,10 +217,15 @@ struct LoginView: View {
         .onChange(of: vm.loginFinished) { finished in
             guard finished else { return }
             if vm.zuvioLoginSuccess && vm.ssoLoginSuccess {
-                // Drawer 所在頁面重置，避免進入錯誤畫面
-                drawerVM.currentPage = .home
-                // 重置後再跳頁，確認無誤
-                appState.navigate(to: .home, withToast: LocalizedStringKey("login_success"))
+                // 檢查版本
+                vm.checkAppVersionThenProceed {
+                    // 只有「沒有新版本」才會跑到這
+                    drawerVM.currentPage = .home
+                    appState.navigate(
+                        to: .home,
+                        withToast: LocalizedStringKey("login_success")
+                    )
+                }
             }
         }
     }

@@ -9,7 +9,8 @@ enum LoginAlert: Identifiable {
     // 基本登入
     case emptyFields
     case loginFailed
-
+    // 發現新版本
+    case newVersion(message: String)
     // === SSO 專用 ===
     case ssoCredentialsFailed(message: String)          // 帳密錯誤
     case ssoPasswordExpiring(message: String)           // 密碼即將到期（SweetAlert）
@@ -22,6 +23,7 @@ enum LoginAlert: Identifiable {
         switch self {
         case .emptyFields: return "emptyFields"
         case .loginFailed: return "loginFailed"
+        case .newVersion(let m): return m
         case .ssoCredentialsFailed(let m): return "ssoCredentialsFailed:\(m)"
         case .ssoPasswordExpiring(let m): return "ssoPasswordExpiring:\(m)"
         case .ssoPasswordExpired(let m): return "ssoPasswordExpired:\(m)"
@@ -36,6 +38,7 @@ enum LoginAlert: Identifiable {
 final class LoginViewModel: ObservableObject {
 
     private let repository = LoginRepository()
+    private let versionManager = VersionManager()
 
     // MARK: - 使用者輸入 & UI 狀態
     @Published var account: String = ""
@@ -114,54 +117,47 @@ final class LoginViewModel: ObservableObject {
     }
 
     func handleSSOLoginResult(_ result: SSOLoginResult) {
-        startSSOLoginProcess = false
-        
         switch result {
         case .success:
+            startSSOLoginProcess = false
             ssoLoginSuccess = true
             checkLoginResult()
         case .credentialsFailed(let message):
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoCredentialsFailed(message: message)
             checkLoginResult()
         case .passwordExpiring(let message):
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoPasswordExpiring(message: message)
             checkLoginResult()
         case .passwordExpired(let message):
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoPasswordExpired(message: message)
             checkLoginResult()
         case .accountLocked(let lockTime):
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoAccountLocked(lockTime: lockTime)
             checkLoginResult()
         case .systemError:
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoSystemError
             checkLoginResult()
         case .generic(let title, let message):
+            startSSOLoginProcess = false
             ssoLoginSuccess = false
             LoginActiveAlert = .ssoGeneric(title: title, message: message)
             checkLoginResult()
-        case .captchaError:
-            // 驗證碼錯誤，重新開始登入流程
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.startSSOLoginProcess = true
-            }
         }
     }
 
+
     private func checkLoginResult() {
         // 當兩邊都完成才收斂
-        
-        print("--------")
-        print("startZuvioLoginProcess:\(startZuvioLoginProcess)")
-        print("zuvioLoginSuccess:\(zuvioLoginSuccess)")
-        print("startSSOLoginProcess:\(startSSOLoginProcess)")
-        print("ssoLoginSuccess:\(ssoLoginSuccess)")
-        print("--------")
-        
         guard !startZuvioLoginProcess, !startSSOLoginProcess else { return }
 
         showOverlay = false
@@ -203,6 +199,21 @@ final class LoginViewModel: ObservableObject {
         // apple 人工審查階段可能被拒
         exit(0)
     }*/
+    
+    func checkAppVersionThenProceed(onProceed: @escaping () -> Void) {
+        versionManager.checkNewVersion { [weak self] canProceed, remoteVersion in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                if !canProceed, let remoteVersion = remoteVersion {
+                    self.LoginActiveAlert = .newVersion(message: remoteVersion)
+                } else {
+                    onProceed()
+                }
+            }
+        }
+    }
+
 }
 
 

@@ -45,7 +45,6 @@ public enum SSOLoginResult {
     case accountLocked(lockTime: String?)
     case systemError
     case generic(title: String, message: String)
-    case captchaError
 }
 
 public struct SSOLoginWebView: UIViewRepresentable {
@@ -243,7 +242,9 @@ public struct SSOLoginWebView: UIViewRepresentable {
                     } else if message.contains("密碼已滿180天") {
                         done(.passwordExpired(message: message))
                     } else if message.contains("驗證碼輸入錯誤") {
-                        done(.captchaError)
+                        // ✅ 驗證碼錯誤：不回報給 ViewModel，直接在這裡自動重試
+                        self.handleCaptchaErrorAndRetry(in: webView)
+                        done(nil)
                     } else {
                         done(.generic(title: title.isEmpty ? "系統訊息" : title, message: message))
                     }
@@ -395,5 +396,30 @@ public struct SSOLoginWebView: UIViewRepresentable {
             }
             return dataURL
         }
+        
+        // 驗證碼錯誤，重試機制
+        private func handleCaptchaErrorAndRetry(in webView: WKWebView) {
+            print("[SSO] Captcha error detected → auto retry")
+
+            // 1) 先把 SweetAlert 關掉（模擬按下確認）
+            let closeJS = """
+            (function(){
+                var btn = document.querySelector('.swal-button--confirm');
+                if (btn) { btn.click(); }
+            })();
+            """
+            self.eval(webView, closeJS, "closeCaptchaErrorDialog") { _ in
+                // 2) 重設狀態，允許再發一次 POST
+                self.isProcessingCaptcha = false
+                self.getSSOViewState = false
+
+                // 3) 等頁面 / 驗證碼更新一下，再重新跑一次 Login_SSO
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    print("[SSO] Retry Login_SSO after captcha error")
+                    self.Login_SSO(in: webView)
+                }
+            }
+        }
+
     }
 }

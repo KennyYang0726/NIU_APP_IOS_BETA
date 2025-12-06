@@ -24,6 +24,9 @@
 "Dialog_AccountLocked_Default_Message" = "\nFor Security\nYou can't login in 15 min";
 "Dialog_Cancel" = "Cancel";
 "Dialog_OK" = "OK";
+"New_Version_Found" = "New Version Found";
+"New_Version_Cancel" = "Not Now";
+"New_Version_OK" = "Go Update";
 // HomeView
   // 主畫面 功能
 "EUNI" = "EUNI\n";

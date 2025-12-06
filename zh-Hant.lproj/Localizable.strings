@@ -24,6 +24,9 @@
 "Dialog_AccountLocked_Default_Message" = "\n安全起見\n15分鐘內不得登入";
 "Dialog_Cancel" = "取消";
 "Dialog_OK" = "OK";
+"New_Version_Found" = "發現新版本";
+"New_Version_Cancel" = "暫不更新";
+"New_Version_OK" = "前往更新";
 // HomeView
   // 主畫面 功能
 "EUNI" = "M園區";
