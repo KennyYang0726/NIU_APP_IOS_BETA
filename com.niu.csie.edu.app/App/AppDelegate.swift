@@ -151,11 +151,20 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
     // MARK: - FCM Token 更新
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        if let fcmToken = fcmToken {
-            PushDiag.log("FCM Token（delegate）：\(fcmToken)")
-            // 之後可在此上傳到你的後端
-        } else {
+        
+        guard let fcmToken = fcmToken else {
             PushDiag.log("FCM Token（delegate）為 nil")
+            return
+        }
+        PushDiag.log("FCM Token（delegate）：\(fcmToken)")
+
+        // 訂閱 Topic
+        Messaging.messaging().subscribe(toTopic: "ios") { error in
+            if let error = error {
+                PushDiag.log("訂閱 Topic 失敗：\(error.localizedDescription)")
+            } else {
+                PushDiag.log("已成功訂閱 Topic：ios")
+            }
         }
     }
 

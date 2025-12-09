@@ -24,7 +24,7 @@ final class NightMarketLogic {
         Spot(name: "羅東夜市", latitude: 24.676150, longitude: 121.769659, radius: 250),
         Spot(name: "員山夜市", latitude: 24.745119, longitude: 121.724427, radius: 190),
         Spot(name: "冬山夜市", latitude: 24.634899, longitude: 121.792794, radius: 200),
-        Spot(name: "礁溪溫泉夜市", latitude: 24.824800, longitude: 121.761008, radius: 370),
+        Spot(name: "礁溪溫泉夜市", latitude: 24.825148, longitude: 121.760581, radius: 320),
         Spot(name: "壯圍番社同安廟口夜市", latitude: 24.733745, longitude: 121.817740, radius: 150),
         Spot(name: "三星夜市", latitude: 24.669425, longitude: 121.653343, radius: 100),
         Spot(name: "頭城夜市", latitude: 24.855386, longitude: 121.821405, radius: 230),

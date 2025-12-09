@@ -73,13 +73,14 @@
 "Achievements_09_Description" = "連續登入30天即可獲得\n中途不得登出！！";
 "Achievements_10_Title" = "逐暗者";
 "Achievements_10_Description" = "連續74天登入，皆使用亮色模式(非暗黑模式)\n中途不得登出！！";
+"Achievements_Prog_Description" = "目前進度：";
 "Achievements_11_Title" = "夜市星人";
 "Achievements_11_Description" = "逛遍宜蘭14夜市，抵達後登入即可紀錄，集滿14個即可獲得(晚上5:30~10:30)，點我看詳情";
 "Achievements_11_showMessage0" = "初始化中...";
 "Achievements_11_showMessage1" = "已完成「夜市星人」成就";
 "Achievements_11_showMessage2" = "未授予定位精確定位權限\n無法進行「夜市星人」成就";
 "Achievements_11_Dialog_Title" = "夜市列表";
-"Achievements_11_Dialog_Message" = "為確保判定正確，於夜市靠中心處誤判率更低\n\n";
+"Achievements_11_Dialog_Message" = "若處在夜市，卻未獲得成就，請於主畫面稍待片刻，即可觸發。\n\n";
 "NightMarket_01" = "東門(全天)";
 "NightMarket_02" = "羅東(全天)";
 "NightMarket_03" = "員山(四)";

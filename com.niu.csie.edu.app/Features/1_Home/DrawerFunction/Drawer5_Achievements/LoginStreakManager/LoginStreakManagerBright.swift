@@ -94,4 +94,9 @@ final class LoginStreakManagerBright {
         let c = Calendar.current
         return c.dateComponents([.day], from: from, to: to).day ?? 0
     }
+    
+    func clearPrefs() {
+        prefs.set(0, forKey: keyDate)
+        prefs.set(0, forKey: keyCount)
+    }
 }

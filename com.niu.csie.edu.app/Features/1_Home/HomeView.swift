@@ -38,6 +38,8 @@ struct HomeView: View {
     @StateObject private var keepAlive = SSOKeepAliveService() // 當畫面在主頁時，keep-alive，他會呼叫 SessionManager
     
     @State private var didRunCheckOnce = false // 檢查 onReceive 匿名登入完成
+    @State private var isLeavingHome = false // 檢查是否為離開 View，
+                                             // 無論登出 or 進入其他功能
     
     private let loginStreak = LoginStreakManager()
     private let loginStreakBright = LoginStreakManagerBright()
@@ -129,9 +131,6 @@ struct HomeView: View {
             // 紀錄連續登入天數
             loginStreak.onLogin()
             loginStreakBright.onLogin()
-            // ...
-            print("已連續登入 \(loginStreak.getLoginCount()) 天")
-            print("已連續亮色模式登入 \(loginStreakBright.getBrightLoginCount()) 天")
             // 取得定位(夜市星人)
             vm.CheckIfInNightMarket()
         }

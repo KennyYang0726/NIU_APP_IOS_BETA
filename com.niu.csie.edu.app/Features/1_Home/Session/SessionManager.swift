@@ -22,6 +22,9 @@ final class SessionManager: ObservableObject {
     @Published var isAuthenticated: Bool = true
 
     private var isRefreshingSSOID = false
+    
+    private let loginStreak = LoginStreakManager()
+    private let loginStreakBright = LoginStreakManagerBright()
 
     // MARK: - 在 Home 出現時自動跑 JS，寫入 SSOID suite
     func refreshSSOID() {
@@ -154,8 +157,11 @@ final class SessionManager: ObservableObject {
             }
         }
 
-        // 2) 立即清本機（帳密/姓名），M園區課程資料 —— 與 Firebase Auth 無關
+        // 2) 立即清本機（帳密/姓名），連續登入紀錄，M園區課程資料
         loginRepo.clearCredentials()
+        loginStreak.clearPrefs()
+        loginStreakBright.clearPrefs()
+
         if let EUNI_CourseData = UserDefaults(suiteName: "EUNIcourseData") {
             EUNI_CourseData.removePersistentDomain(forName: "EUNIcourseData")
             EUNI_CourseData.synchronize()

@@ -20,6 +20,9 @@ final class Drawer_AchievementsViewModel: ObservableObject {
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
     private let achievement = AchievementsMethod()
     
+    private let loginStreak = LoginStreakManager() // 顯示達成天數
+    private let loginStreakBright = LoginStreakManagerBright() // 顯示達成天數
+    
     private let nightMarketList: [LocalizedStringKey] = [
         "NightMarket_01", "NightMarket_02", "NightMarket_03",
         "NightMarket_04", "NightMarket_05", "NightMarket_06",
@@ -48,12 +51,19 @@ final class Drawer_AchievementsViewModel: ObservableObject {
             if let str = raw as? String, let intVal = Int(str) {
                 isCompleted = (intVal == 1)
             }
-
+            
+            var subtitle = NSLocalizedString("Achievements_\(key)_Description", comment: "")
+            // 只有 index 9、10 需要加進度
+            if index == 9 {
+                subtitle += "\n\(NSLocalizedString("Achievements_Prog_Description", comment: ""))\(loginStreak.getLoginCount())/30"
+            } else if index == 10 {
+                subtitle += "\n\(NSLocalizedString("Achievements_Prog_Description", comment: ""))\(loginStreakBright.getBrightLoginCount())/74"
+            }
             newFeatures.append(
                 AchievementsFeature(
                     iconName: "Achievement_\(key)_Icon",
                     title: NSLocalizedString("Achievements_\(key)_Title", comment: ""),
-                    subtitle: NSLocalizedString("Achievements_\(key)_Description", comment: ""),
+                    subtitle: subtitle,
                     status: isCompleted ? "completed_\(langSuffix)" : "uncompleted_\(langSuffix)"
                 )
             )
@@ -87,7 +97,8 @@ final class Drawer_AchievementsViewModel: ObservableObject {
     
     func buildNightMarketParts(from state: String) -> [AlertMessagePart] {
         var parts: [AlertMessagePart] = []
-
+        // 顯示一小段提示字
+        parts.append(.textKey("Achievements_11_Dialog_Message"))
         for (i, char) in state.enumerated() {
             guard i < nightMarketList.count else { break }
 

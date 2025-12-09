@@ -73,13 +73,14 @@
 "Achievements_09_Description" = "Log in for 30 days straight to unlock this.\nNo breaks allowed.";
 "Achievements_10_Title" = "Dark Repulsor";
 "Achievements_10_Description" = "Log in for 74 consecutive days, always using Light Mode.\nNo breaks allowed.";
+"Achievements_Prog_Description" = "Progress: ";
 "Achievements_11_Title" = "Night Market Guy";
 "Achievements_11_Description" = "Visit all 14 night markets in Yilan. Log in on-site to record each one. Collect all 14 (5:30 PM–10:30 PM) to unlock this. Tap for details.";
 "Achievements_11_showMessage0" = "Initializing...";
 "Achievements_11_showMessage1" = "Achievement “Night Market Guy” completed.";
 "Achievements_11_showMessage2" = "Precise location permission not granted.\nUnable to progress “Night Market Guy” achievement.";
 "Achievements_11_Dialog_Title" = "Night Market List";
-"Achievements_11_Dialog_Message" = "For better accuracy, please log in closer to the center of the night market.\n\n";
+"Achievements_11_Dialog_Message" = "If you’re at the night market but didn’t get the achievement, stay at the HomePage briefly to trigger it.\n\n";
 "NightMarket_01" = "Dongmen(All day)";
 "NightMarket_02" = "Luodong(All day)";
 "NightMarket_03" = "Yuanshan(Thu.)";

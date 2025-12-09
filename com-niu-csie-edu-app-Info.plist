@@ -2,9 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    	<key>NSAllowsArbitraryLoadsInWebContent</key>
+    	<true/>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MenuIcon.ttf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>用於拍攝照片或錄影以上傳資料或完成系統功能。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>用於選取照片或影片以上傳資料或完成系統功能。</string>
 </dict>
 </plist>
