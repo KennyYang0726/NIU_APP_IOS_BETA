@@ -38,3 +38,7 @@ xcuserdata/
 *.tmp
 *.orig
 *.xcworkspace/xcuserdata
+
+# === Private Certified files ===
+*.p8
+*.cer

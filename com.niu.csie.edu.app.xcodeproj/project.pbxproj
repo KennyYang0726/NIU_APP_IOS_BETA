@@ -14,8 +14,8 @@
 		108474CC2E9A8A2000CEB37C /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 108474CB2E9A8A2000CEB37C /* FirebaseDatabase */; };
 		108474CE2E9A8A3600CEB37C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 108474CD2E9A8A3600CEB37C /* FirebaseMessaging */; };
 		108474D02E9A8C7F00CEB37C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 108474CF2E9A8C7F00CEB37C /* FirebaseAuth */; };
-		108474D22E9A94F100CEB37C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 108474D12E9A94F100CEB37C /* GoogleService-Info.plist */; };
 		10B53FD82EE1DA980018BCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 10B53FD62EE1DA980018BCE4 /* Localizable.strings */; };
+		10C1AC2D2EE905AF0031211B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 10C1AC2C2EE905AF0031211B /* GoogleService-Info.plist */; };
 		1AA990812C8351D200819A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AA990802C8351D200819A69 /* Assets.xcassets */; };
 		1AA990842C8351D200819A69 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AA990832C8351D200819A69 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -23,11 +23,11 @@
 /* Begin PBXFileReference section */
 		1050E1842EA240AF00120A06 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		1050E1862EA240C600120A06 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
-		108474D12E9A94F100CEB37C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		10A150EE2E8E560200A1592A /* com-niu-csie-edu-app-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "com-niu-csie-edu-app-Info.plist"; sourceTree = SOURCE_ROOT; };
 		10B53FD72EE1DA980018BCE4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		10B53FD92EE1DB3A0018BCE4 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 		10C1A8072EE810460031211B /* com.niu.csie.edu.app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.niu.csie.edu.app.entitlements; sourceTree = "<group>"; };
+		10C1AC2C2EE905AF0031211B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1AA990792C8351CD00819A69 /* com.niu.csie.edu.app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = com.niu.csie.edu.app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA990802C8351D200819A69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AA990832C8351D200819A69 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -90,7 +90,6 @@
 			children = (
 				10A150EB2E8E50B300A1592A /* Fonts */,
 				1AA990802C8351D200819A69 /* Assets.xcassets */,
-				108474D12E9A94F100CEB37C /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -101,6 +100,7 @@
 				1AA9907B2C8351CD00819A69 /* com.niu.csie.edu.app */,
 				108474CA2E9A8A2000CEB37C /* Frameworks */,
 				1AA9907A2C8351CD00819A69 /* Products */,
+				10C1AC2C2EE905AF0031211B /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,8 +211,8 @@
 				1050E1852EA240AF00120A06 /* InfoPlist.strings in Resources */,
 				1AA990842C8351D200819A69 /* Preview Assets.xcassets in Resources */,
 				10B53FD82EE1DA980018BCE4 /* Localizable.strings in Resources */,
-				108474D22E9A94F100CEB37C /* GoogleService-Info.plist in Resources */,
 				1AA990812C8351D200819A69 /* Assets.xcassets in Resources */,
+				10C1AC2D2EE905AF0031211B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +389,9 @@
 				INFOPLIST_FILE = "com-niu-csie-edu-app-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "用於拍攝照片或錄影以上傳資料或完成系統功能。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "我們需要使用您的位置，以提供 Zuvio GPS 點名與成就功能。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用於選取照片或影片以上傳資料或完成系統功能。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -403,7 +405,7 @@
 				MARKETING_VERSION = 1.0.0;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "NIU-APP.com-niu-csie-edu-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.niu.csie.edu.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -430,7 +432,9 @@
 				INFOPLIST_FILE = "com-niu-csie-edu-app-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "用於拍攝照片或錄影以上傳資料或完成系統功能。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "我們需要使用您的位置，以提供 Zuvio GPS 點名與成就功能。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用於選取照片或影片以上傳資料或完成系統功能。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -445,7 +449,7 @@
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "NIU-APP.com-niu-csie-edu-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.niu.csie.edu.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

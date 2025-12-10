@@ -15,16 +15,21 @@ final class PushDiag {
 }
 
 
-class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, CLLocationManagerDelegate {
+class AppDelegate: NSObject,
+                   UIApplicationDelegate,
+                   UNUserNotificationCenterDelegate,
+                   MessagingDelegate,
+                   CLLocationManagerDelegate {
 
     private var locationManager: CLLocationManager?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
+        // 初始化 Firebase（讀取 GoogleService-Info.plist）
         FirebaseApp.configure()
 
-        // 代理人
+        // 設定通知中心與 FCM 的 delegate
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
 
@@ -37,18 +42,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // 啟動時從 Firebase 讀取學期值，更新 AppSettings
         AppSettingsManager.shared.loadSemester()
 
-        // 主動抓一次 FCM Token（有時候 delegate 不會立刻回）
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                PushDiag.log("取得 FCM Token 失敗：\(error)")
-            } else if let token = token {
-                PushDiag.log("FCM Token（主動）：\(token)")
-            } else {
-                PushDiag.log("FCM Token 為 nil（免費簽名常見）")
-            }
-        }
-
-        // 診斷：目前是否已註冊遠端通知
+        // 診斷：目前是否已註冊遠端通知（方便確認 registerForRemoteNotifications 是否有成功）
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             PushDiag.log("isRegisteredForRemoteNotifications = \(application.isRegisteredForRemoteNotifications)")
         }
@@ -130,15 +124,27 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         PushDiag.log("定位錯誤：\(error.localizedDescription)")
     }*/
-
+    
     // MARK: - APNs 註冊結果
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         PushDiag.log("APNs Device Token：\(tokenString)")
 
-        // 關鍵：把 APNs token 交給 FCM（之後付費並上傳 APNs Key 才能用）
+        // 關鍵：把 APNs token 交給 FCM
+        // 官方文件說明，若未設定 APNs token 即取得 FCM Token，該 FCM Token 無法透過 APNs 送達。:contentReference[oaicite:10]{index=10}
         Messaging.messaging().apnsToken = deviceToken
+
+        // 在 APNs token 設定完成後，再主動抓一次 FCM Token（避免早於 APNs token 的時機取得到「無法送達」的 token）
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                PushDiag.log("取得 FCM Token 失敗（APNs 已設定後）：\(error)")
+            } else if let token = token {
+                PushDiag.log("FCM Token（主動，APNs OK）：\(token)")
+            } else {
+                PushDiag.log("FCM Token 為 nil（可能是免費簽名或網路狀況）")
+            }
+        }
     }
 
     func application(_ application: UIApplication,
@@ -158,21 +164,29 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         }
         PushDiag.log("FCM Token（delegate）：\(fcmToken)")
 
-        // 訂閱 Topic
-        Messaging.messaging().subscribe(toTopic: "ios") { error in
-            if let error = error {
-                PushDiag.log("訂閱 Topic 失敗：\(error.localizedDescription)")
-            } else {
-                PushDiag.log("已成功訂閱 Topic：ios")
-            }
-        }
+        // 建議：如果未來要做「針對特定使用者推播」，可以在這裡把 token 上傳到自己的後端
+        // 例如：AppServerAPI.shared.updatePushToken(fcmToken)
     }
 
     // MARK: - 前景通知呈現
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // App 在前景時也顯示 banner / 聲音 / badge
         completionHandler([.banner, .sound, .badge])
+    }
+
+    // MARK: - 使用者點擊通知（背景 / App 被滑掉 → 點通知回來）
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        PushDiag.log("使用者點擊通知：\(userInfo)")
+
+        // 這裡可以依 userInfo 做導頁或資料更新
+        // 例如：NavigationManager.shared.handlePush(userInfo)
+
+        completionHandler()
     }
 
     // MARK: - 點擊通知/背景抓取（處理 data-only 或導航）
@@ -183,3 +197,4 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         completionHandler(.newData)
     }
 }
+

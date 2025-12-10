@@ -4,8 +4,8 @@
 <dict>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-    	<key>NSAllowsArbitraryLoadsInWebContent</key>
-    	<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
@@ -15,9 +15,5 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>用於拍攝照片或錄影以上傳資料或完成系統功能。</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>用於選取照片或影片以上傳資料或完成系統功能。</string>
 </dict>
 </plist>
