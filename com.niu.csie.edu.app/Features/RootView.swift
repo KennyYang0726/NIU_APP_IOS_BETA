@@ -5,6 +5,9 @@ import SwiftUI
 struct RootView: View {
     // @StateObject var appState = AppState()
     @EnvironmentObject var appState: AppState
+    // 只有 ipad 要套用這個 canvas
+    private let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
     @ViewBuilder
     func currentView() -> some View {
         switch appState.route {
@@ -40,11 +43,27 @@ struct RootView: View {
     }
     
     var body: some View {
+        /*
         ZStack {
-            // 以 id 保證 SwiftUI 視為不同 View 以觸發 transition
             currentView()
                 .id(appState.route)
                 .transition(transitionFor(appState.navAnimation))
+        }*/
+        let mainContent =
+            ZStack {
+                currentView()
+                    .id(appState.route)
+                    .transition(transitionFor(appState.navAnimation))
+            }
+        // ipad 把整個 app content 放進 PortraitCanvas
+        Group {
+            if isPad {
+                PortraitCanvas(backgroundColor: .black) {
+                    mainContent
+                }
+            } else {
+                mainContent
+            }
         }
         .toast(isPresented: Binding(
             get: { appState.toastMessage != nil },

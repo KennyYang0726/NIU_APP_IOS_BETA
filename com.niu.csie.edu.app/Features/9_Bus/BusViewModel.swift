@@ -34,6 +34,7 @@ final class BusViewModel: ObservableObject {
     });
     const bodyDiv = document.querySelector("#MasterPageBodyTag > div");
     if (bodyDiv) bodyDiv.style.paddingTop = "10px";
+    document.querySelector('.footer-sitemap').style.display = 'none';
     """
     
     // --- JS：暗黑模式樣式 ---

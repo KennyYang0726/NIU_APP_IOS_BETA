@@ -59,57 +59,49 @@ struct HomeView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // 背景色
-                Color("Linear")
-                    .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    // ScrollView 內容
-                    ScrollView {
-                        VStack(spacing: 32) {
-                            LazyVGrid(columns: columns,
-                                      alignment: .center,
-                                      spacing: hSizeClass == .regular ? 28 : 20) {
-                                ForEach(defaultFeatures) { feature in
-                                    FeatureItemView(feature: feature,
-                                                    isPad: hSizeClass == .regular)
-                                    .contentShape(Rectangle())
-                                    // 新增點擊事件
-                                    .onTapGesture {
-                                        if let route = route(for: feature.KeyIndex) {
-                                            appState.navigate(to: route)
-                                        }
+        ZStack {
+            // 背景色
+            Color("Linear")
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // ScrollView 內容
+                ScrollView {
+                    VStack(spacing: 32) {
+                        LazyVGrid(columns: columns,
+                                  alignment: .center,
+                                  spacing: hSizeClass == .regular ? 28 : 20) {
+                            ForEach(defaultFeatures) { feature in
+                                FeatureItemView(feature: feature,
+                                                isPad: hSizeClass == .regular)
+                                .contentShape(Rectangle())
+                                // 新增點擊事件
+                                .onTapGesture {
+                                    if let route = route(for: feature.KeyIndex) {
+                                        appState.navigate(to: route)
                                     }
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.top, 12)
-                            
-                            // 這裡放一個 Spacer，佔據和底圖一樣的高度
-                            GeometryReader { proxy in
-                                Color.clear
-                                    .frame(height: proxy.size.height)
-                            }
-                            .frame(height: 0) // 不要影響 ScrollView 高度
-
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        
+                        // 這裡放一個 Spacer，佔據和底圖一樣的高度
+                        GeometryReader { proxy in
+                            Color.clear
+                                .frame(height: proxy.size.height)
+                        }
+                        .frame(height: 0) // 不要影響 ScrollView 高度
+
                     }
-                    
-                    // 底部圖片
-                    Image("NIU_background")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .padding(.bottom, hSizeClass == .regular ? -67 : -37) // 負數往下推
                 }
+                // 底部圖片
+                Image("NIU_background")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, hSizeClass == .regular ? -67 : -37) // 負數往下推
             }
-            .navigationTitle(title)
-            .toolbarBackground(.visible, for: .navigationBar) // 強制背景顯示
-            .toolbarBackground(Color.accentColor, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .navigationBarTitleDisplayMode(.inline) // 固定使用小標題樣式
         }
         // 登出中 prog (注意！放在這裡才是全版面)
         .overlay(

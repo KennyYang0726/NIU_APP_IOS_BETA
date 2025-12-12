@@ -11,25 +11,27 @@ struct DrawerManagerView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                currentPageView(vm.currentPage)
-                // 遮罩：跟著透明度變化
-                Color.black.opacity(vm.isDrawerOpen ? 0.3 : 0.0)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(vm.isDrawerOpen)
-                    .onTapGesture { vm.closeDrawer() }
-                    .animation(.easeInOut(duration: 0.25), value: vm.isDrawerOpen)
-                    .zIndex(1)
-
-                // 抽屜：始終在樹上，靠 offset 做開合
-                HStack(spacing: 0) {
-                    DrawerView(vm: vm)
-                        .frame(width: drawerWidth)
-                        .offset(x: vm.isDrawerOpen ? 0 : -drawerWidth)
+            GeometryReader { geo in
+                ZStack {
+                    currentPageView(vm.currentPage)
+                    // 遮罩：跟著透明度變化
+                    Color.black.opacity(vm.isDrawerOpen ? 0.3 : 0.0)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(vm.isDrawerOpen)
+                        .onTapGesture { vm.closeDrawer() }
                         .animation(.easeInOut(duration: 0.25), value: vm.isDrawerOpen)
-                    Spacer()
+                        .zIndex(1)
+
+                    // 抽屜：始終在樹上，靠 offset 做開合
+                    HStack(spacing: 0) {
+                        DrawerView(vm: vm)
+                            .frame(width: drawerWidth)
+                            .offset(x: vm.isDrawerOpen ? 0 : -drawerWidth)
+                            .animation(.easeInOut(duration: 0.25), value: vm.isDrawerOpen)
+                        Spacer()
+                    }
+                    .zIndex(2)
                 }
-                .zIndex(2)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
